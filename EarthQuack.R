@@ -142,6 +142,9 @@ Eq_c
 plot( density(Eq_c$events_count) , main = "Density plot for Earthquake")
 plot(density(Vol_c$events_count), main = "Density plot for Volcano")
 
+hist((Eq_c$events_count), breaks = 10 , main = "Histogram plot for Earthquake")
+plot(hist(Vol_c$events_count), main = "Density plot for Volcano")
+
 #############################Time series 
 
 library(tseries)
