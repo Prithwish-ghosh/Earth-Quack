@@ -786,8 +786,170 @@ print(vol)
 eq.dens = vmf_density_grid(dEq , ngrid = 300)
 
 
+head(Earth_quack)
+dim(Earth_quack)
+head(Earthquake)
+dim(Volcano)
+head(Earthquake)
+
+datetime <- as.POSIXct(Earthquake$Time, format = "%Y-%m-%dT%H:%M:%OS")
+
+# Extract the date and time components
+Earthquake$date <- as.Date(datetime)
+
+head(Earthquake)
+
+head(Volcano)
+Vol = Volcano[,-c(1:6,10)]
+head(Vol)
+Vol$end_date <- as.Date(paste(Vol$end_year, Vol$end_month, Vol$end_day, sep = "-"))
+Vol$start_date <- as.Date(paste(Vol$start_year, Vol$start_month, Vol$start_day, sep = "-"))
+# Print the updated data frame
+
+head(Vol)
+
+dim(Vol)
+
+                         
+# Get the volcano eruption date
+volcano_eruption_date <- Vol$start_date
 
 
+num_earthquakes_before_eruption <- numeric(length(volcano_eruption_date))
+
+
+for (i in 1:length(volcano_eruption_date)) {
+  # Get the current eruption date
+  current_eruption_date <- volcano_eruption_date[i]
+  
+  # Filter earthquakes that occurred before the current eruption date
+  earthquakes_before_eruption <- subset(dataset_list[[i]], dataset_list[[i]]$date >=
+                                          (current_eruption_date - 365*3) &
+                                           dataset_list[[i]]$date 
+                                        < current_eruption_date)
+  
+  # Count the number of earthquakes before the current eruption date
+  num_earthquakes_before_eruption[i] <- nrow(earthquakes_before_eruption)
+}
+
+
+num_earthquakes_before_eruption[1]
+
+
+
+Vol$days_between = Vol$days_between/365
+
+Vol$num_earthquakes_before_erupt = c(num_earthquakes_before_eruption)
+Vol$num_earthquakes_before_erupt
+plot(Vol$num_earthquakes_before_erupt, Vol$days_between)
+
+
+earthquakes_before_eruption_list <- list()
+
+# Define the time window (3 years)
+time_window <- 3 * 365  # Assuming approximately 365 days per year
+
+# Iterate through each eruption in the volcano data
+for (i in 1:nrow(Vol)) {
+  eruption_date <- Vol$start_date[i]
+  
+
+  eruption_earthquakes <- data.frame(date = as.Date(character(0)), magnitude = numeric(0))
+  
+
+  for (j in 1:length(dataset_list)) {
+    earthquake_data <- dataset_list[[j]]
+    
+    # Extract earthquakes that occurred before the eruption date within the time window
+    valid_earthquakes <- earthquake_data[earthquake_data$date >= (eruption_date - time_window) &
+                                           earthquake_data$date < eruption_date, ]
+    
+
+    eruption_earthquakes <- rbind(eruption_earthquakes, valid_earthquakes)
+  }
+  
+
+  earthquakes_before_eruption_list[[i]] <- eruption_earthquakes
+}
+
+
+
+dim(earthquakes_before_eruption_list[[1]])
+dim(dataset_list[[2]])
+earthquakes_before_eruption_list[[1106]]
+
+
+library(data.table)
+earthq_before3 = rbindlist(earthquakes_before_eruption_list)
+head(earthq_before3)
+
+summary(earthq_before3)
+
+dim(Vol)
+
+calculate_distance <- function(lat1, lon1, lat2, lon2) {
+  dist <- distVincentySphere(c(lon1, lat1), c(lon2, lat2))
+  return(dist)
+}
+
+
+find_nearest_earthquake <- function(volcano_lat, volcano_lon, earthquake_data) {
+  
+  distances <- sapply(1:nrow(earthquake_data), function(i) {
+    dist <- calculate_distance(volcano_lat, volcano_lon, earthquake_data[i, "Latitude"], earthquake_data[i, "Longitude"])
+    return(dist)
+  })
+  
+  
+  nearest_earthquake_index <- which(distances <= 100000)
+  nearest_earthquake <- earthquake_data[nearest_earthquake_index, ]
+  
+  return(nearest_earthquake)
+}
+
+
+Vol$Latitude = Vol$latitude
+Vol$Longitude = Vol$longitude
+
+
+nearest_earthquakes_list <- list()
+
+for (i in 1:nrow(Vol)) {
+  volcano_lat <- Vol[i, "Latitude"]
+  volcano_lon <- Vol[i, "Longitude"]
+  earthquake_data <- earthquakes_before_eruption_list[[i]]
+  
+  # Find the nearest earthquake within 100 km
+  nearest_earthquake <- find_nearest_earthquake(volcano_lat, volcano_lon, earthquake_data)
+  
+  nearest_earthquakes_list[[i]] <- nearest_earthquake
+}
+
+
+nearest_earthquakes_list[[2]]
+
+
+m = c()
+for (i in 1:1105) {
+  m[i] = mean(nearest_earthquakes_list[[i]]$Mag)
+}
+
+gm = c()
+for (i in 1:1105) {
+  gm[i] = exp(mean(log(nearest_earthquakes_list[[i]]$Mag)))
+}
+
+
+head(gm)
+
+Vol$meanMag = m
+Vol$gM = gm
+Vol1 = na.omit(Vol)
+
+summary(Vol1$gM)
+
+plot(Vol1$gM, Vol1$days_between)
+plot(Vol1$meanMag, Vol1$days_between)
 
 
 
