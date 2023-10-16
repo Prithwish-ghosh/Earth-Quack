@@ -952,5 +952,74 @@ plot(Vol1$gM, Vol1$days_between)
 plot(Vol1$meanMag, Vol1$days_between)
 
 
+world_map <- map_data("world")
+
+datasetee = rbind(dataset_list[[4]])
+dim(Vol1)
+Vol$d = "Rincon de la Vieja Volcano"
+datasetee$d = "Earthquake"
+
+dataset1 = data.frame(Longitude = datasetee$Longitude,
+                      Latitude = datasetee$Latitude,
+                      Dataset = datasetee$d )
+
+dataset2 = data.frame(Longitude = Vol[c(4),]$longitude, Latitude = Vol[c(4),]$latitude,
+                      Dataset = Vol[c(4),]$d)
+
+world_data <- rbind(dataset1, dataset2)
+tail(world_data)
 
 
+world_map <- map_data("world")
+northern_map <- subset(world_map, long >-86)
+northern_map1 <- subset(northern_map , long < -84)
+northern_map2 <- subset(northern_map1 , lat >= 9)
+northern_map3 <- subset(northern_map2 , lat <= 12.5)
+
+library(ggforce)
+world_plot <- ggplot() +
+  geom_polygon(data = northern_map3, aes(x = long, y = lat, group = group), fill = "#FFF8DC", color = "black") +
+  geom_point(data = world_data, aes(x = Longitude, y = Latitude, color = Dataset, 
+                                    shape = Dataset, size = 3,
+                                    fill = Dataset)) +
+  geom_circle(data = dataset2, aes(x0 = Longitude, y0 = Latitude, r = 1),
+               color = "red", alpha = 5) +
+  
+  scale_color_manual(values = c("Earthquake" = "blue", "Rincon de la Vieja Volcano" = "red")) +
+  scale_shape_manual(values = c("Earthquake" = 1 , "Rincon de la Vieja Volcano" = 24))+
+ # scale_size_manual(values = c("Earthquake" = 2 , "Rincon de la Vieja Volcano" = 4))+
+  scale_fill_manual(values = c("Earthquake" = "blue","Rincon de la Vieja Volcano" = "red")) +
+  theme_minimal() +
+  labs(title = "Rincon de la Vieja Volcano and the earthquake arround that")
+
+plot(world_plot)
+
+library(scatterplot3d)
+dim(Vol1)
+# Create a 3D scatter plot
+scatterplot3d(Vol1$num_earthquakes_before_erupt, Vol1$meanMag , Vol1$days_between ,main = "Scatter Plot 3D", pch = 19, col = "blue")
+
+# Optionally, add labels, adjust view, etc.
+title3d("3D Scatter Plot", line = 1, col = "red")
+
+plot(Vol1$num_earthquakes_before_erupt, Vol1$gM)
+
+fit = lm(Vol1$gM ~ Vol1$meanMag , Vol1)
+
+ggplot(Vol1, aes(x = Vol1$num_earthquakes_before_erupt, y = Vol1$gM)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ poly(x, 1), color = "blue") +
+  labs(x = "Number of Earthuqakes", y = "GM of Magnitude") +
+  ggtitle("Linear Regression")
+
+
+
+fit = lm(Vol1$meanMag ~ poly(Vol1$num_earthquakes_before_erupt, 2))
+
+summary(fit)
+plot(Vol1$gM, Vol1$days_between, xlab = "Geometric Mean of Magnitude (Exponential Trans)", 
+     ylab = "Eruption Time")
+plot(Vol1$meanMag, Vol1$days_between, xlab = "A-M of Magnitude (Exponential Trans)", 
+     ylab = "Eruption Time")
+
+                         
