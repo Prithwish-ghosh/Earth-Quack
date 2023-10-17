@@ -334,35 +334,36 @@ ggplot() +
   geom_map(
     data = world_coordinates,map = world_coordinates,
     aes(long, lat , map_id = region),
-    color = "black" , fill = "lightblue"
+    color = "black" , fill = "#FFF8DC"
   ) +
   geom_point(
     data = Combined_final_data, 
-    aes(Combined_final_data$EQ_long , Combined_final_data$EQ_lat , color = "red",
-        size = Combined_final_data$EQ_mag, ) ,
-    alpha = 0.2
+      aes(Combined_final_data$Vol_long , Combined_final_data$Vol_lat , color = "black",
+        size = Combined_final_data$Num_of_days_Vol_erupted, ) , col = "red", shape = 24,
+    alpha = 0.7
   ) +
   theme(legend.position = "top")
+
   
   #geom_point(
    # data = Combined_final_data, 
   #  aes(Combined_final_data$Vol_long , Combined_final_data$Vol_lat , color = "blue"),
    # alpha = 1
   #) 
-
 ggplot() +
   geom_map(
     data = world_coordinates,map = world_coordinates,
     aes(long, lat , map_id = region),
-    color = "black" , fill = "lightblue"
+    color = "black" , fill = "#FFF8DC"
   ) +
   geom_point(
     data = Combined_final_data, 
-    aes(Combined_final_data$Vol_long , Combined_final_data$Vol_lat , color = "red",
-        size = Combined_final_data$Num_of_days_Vol_erupted, ) ,
+    aes(Combined_final_data$EQ_long , Combined_final_data$EQ_lat , color = "black",
+        size = Combined_final_data$EQ_mag, ) , col = "red",
     alpha = 0.4
   ) +
   theme(legend.position = "top")
+
 
 head(Combined_final_data)
 
@@ -994,27 +995,19 @@ world_plot <- ggplot() +
 
 plot(world_plot)
 
-library(scatterplot3d)
-dim(Vol1)
-# Create a 3D scatter plot
-scatterplot3d(Vol1$num_earthquakes_before_erupt, Vol1$meanMag , Vol1$days_between ,main = "Scatter Plot 3D", pch = 19, col = "blue")
-
-# Optionally, add labels, adjust view, etc.
-title3d("3D Scatter Plot", line = 1, col = "red")
-
 plot(Vol1$num_earthquakes_before_erupt, Vol1$gM)
 
 fit = lm(Vol1$gM ~ Vol1$meanMag , Vol1)
 
 ggplot(Vol1, aes(x = Vol1$num_earthquakes_before_erupt, y = Vol1$gM)) +
   geom_point() +
-  geom_smooth(method = "lm", formula = y ~ poly(x, 1), color = "blue") +
+  geom_smooth(method = "lm", formula = y ~ poly(x, 5), color = "blue") +
   labs(x = "Number of Earthuqakes", y = "GM of Magnitude") +
   ggtitle("Linear Regression")
 
 
 
-fit = lm(Vol1$meanMag ~ poly(Vol1$num_earthquakes_before_erupt, 2))
+fit = lm(Vol1$meanMag ~ poly(Vol1$num_earthquakes_before_erupt, 5))
 
 summary(fit)
 plot(Vol1$gM, Vol1$days_between, xlab = "Geometric Mean of Magnitude (Exponential Trans)", 
