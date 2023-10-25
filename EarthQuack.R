@@ -928,6 +928,42 @@ for (i in 1:nrow(Vol)) {
 
 
 nearest_earthquakes_list[[2]]
+num_earthquakes_before_eruption_list <- list()
+
+
+for (i in 1:length(volcano_eruption_date)) {
+  # Get the current eruption date
+  current_eruption_date <- volcano_eruption_date[i]
+  
+  # Filter earthquakes that occurred before the current eruption date
+  earthquakes_before_eruption <- subset(dataset_list[[i]], dataset_list[[i]]$date >=
+                                          (current_eruption_date - 365*3) &
+                                          dataset_list[[i]]$date 
+                                        < current_eruption_date)
+  
+  # Count the number of earthquakes before the current eruption date
+  num_earthquakes_before_eruption_list[[i]] <- earthquakes_before_eruption
+}
+
+Sum_mag = c()
+for (i in 1:1105) {
+  Sum_mag[i] = sum(num_earthquakes_before_eruption_list[[i]]$Mag)
+}
+
+num_earthquakes_before_eruption_list[[1000]]
+Vol$Sum_Am = Sum_mag
+
+
+
+m = c()
+for (i in 1:1105) {
+  m[i] = mean(num_earthquakes_before_eruption_list[[i]]$Mag)
+}
+
+m[is.nan(m)] <- 0
+
+length(m)
+
 
 
 m = c()
@@ -1016,3 +1052,279 @@ plot(Vol1$meanMag, Vol1$days_between, xlab = "A-M of Magnitude (Exponential Tran
      ylab = "Eruption Time")
 
                          
+three_y = read.csv("C:/Users/prithwihsh/OneDrive/Documents/3_years.csv")
+head(three_y)
+summary(three_y)
+thre_y = three_y[,c(7,8,11,12,14)]
+head(thre_y)
+dim(three_y)
+
+
+three_y$Sum_magnitude = Sum_mag
+
+
+
+filtered_data = c()
+for (i in 0:18) {
+  filtered_data[[i]] <- thre_y[thre_y$num_earthquakes_before_erupt == i, ]
+}
+
+
+count_datasets = list()
+for (count_value in 0:18) {
+  # Extract data for the current count value
+  subset_data <- subset(thre_y, thre_y$num_earthquakes_before_erupt == count_value)
+  
+  # Store the subset in the list using a unique name
+  count_datasets[[paste("count", count_value, sep = "_")]] <- subset_data
+}
+
+
+names(count_datasets)
+
+
+# Access a specific dataset, e.g., count_10
+count_0 <- count_datasets[["count_0"]]
+count_1 <- count_datasets[["count_1"]]
+count_2 <- count_datasets[["count_2"]]
+count_3 <- count_datasets[["count_3"]]
+count_4 <- count_datasets[["count_4"]]
+count_5 <- count_datasets[["count_5"]]
+count_6 <- count_datasets[["count_6"]]
+count_7 <- count_datasets[["count_7"]]
+count_8 <- count_datasets[["count_8"]]
+count_9 <- count_datasets[["count_9"]]
+count_10 <- count_datasets[["count_10"]]
+count_11 <- count_datasets[["count_11"]]
+count_12 <- count_datasets[["count_12"]]
+count_13 <- count_datasets[["count_13"]]
+count_14 <- count_datasets[["count_14"]]
+count_15 <- count_datasets[["count_15"]]
+count_16 <- count_datasets[["count_16"]]
+count_17 <- count_datasets[["count_17"]]
+count_18 <- count_datasets[["count_18"]]
+
+
+count_2$am_mag = count_2$Sum_magnitude/count_2$num_earthquakes_before_erupt
+count_3$am_mag = count_3$Sum_magnitude/count_3$num_earthquakes_before_erupt
+count_4$am_mag = count_4$Sum_magnitude/count_4$num_earthquakes_before_erupt
+count_5$am_mag = count_5$Sum_magnitude/count_5$num_earthquakes_before_erupt
+count_6$am_mag = count_6$Sum_magnitude/count_6$num_earthquakes_before_erupt
+count_7$am_mag = count_7$Sum_magnitude/count_7$num_earthquakes_before_erupt
+count_8$am_mag = count_8$Sum_magnitude/count_8$num_earthquakes_before_erupt
+count_9$am_mag = count_9$Sum_magnitude/count_9$num_earthquakes_before_erupt
+count_10$am_mag = count_10$Sum_magnitude/count_10$num_earthquakes_before_erupt
+count_11$am_mag = count_11$Sum_magnitude/count_11$num_earthquakes_before_erupt
+count_12$am_mag = count_12$Sum_magnitude/count_12$num_earthquakes_before_erupt
+count_13$am_mag = count_13$Sum_magnitude/count_13$num_earthquakes_before_erupt
+count_14$am_mag = count_14$Sum_magnitude/count_14$num_earthquakes_before_erupt
+count_15$am_mag = count_15$Sum_magnitude/count_15$num_earthquakes_before_erupt
+count_16$am_mag = count_16$Sum_magnitude/count_16$num_earthquakes_before_erupt
+count_17$am_mag = count_17$Sum_magnitude/count_17$num_earthquakes_before_erupt
+count_18$am_mag = count_18$Sum_magnitude/count_18$num_earthquakes_before_erupt
+head(count_5)
+
+
+absolute_median_0 = 0
+absolute_median_1 = median(count_1$Sum_magnitude)
+absolute_median_2 = median(count_2$am_mag)
+absolute_median_3 = median(count_3$am_mag)
+absolute_median_4 = median(count_4$am_mag)
+absolute_median_5 = median(count_5$am_mag)
+absolute_median_6 = median(count_6$am_mag)
+absolute_median_7 = median(count_7$am_mag)
+absolute_median_8 = median(count_8$am_mag)
+absolute_median_9 = median(count_9$am_mag)
+absolute_median_10 = median(count_10$am_mag)
+absolute_median_11 = median(count_11$am_mag)
+absolute_median_12 = median(count_12$am_mag)
+absolute_median_13 = median(count_13$am_mag)
+absolute_median_14 = median(count_14$am_mag)
+absolute_median_15 = median(count_15$am_mag)
+absolute_median_16 = median(count_16$am_mag)
+absolute_median_17 = median(count_17$am_mag)
+absolute_median_18 = median(count_18$am_mag)
+abs_median = c(absolute_median_1,absolute_median_2,absolute_median_3,
+             absolute_median_4,absolute_median_5,absolute_median_6,absolute_median_7,
+             absolute_median_8,absolute_median_9,absolute_median_10,absolute_median_11,
+             absolute_median_12,absolute_median_13,absolute_median_14,absolute_median_15,
+             absolute_median_16,absolute_median_17,absolute_median_18)
+
+absolute_mean_0 = 0
+
+absolute_mean_1 = sum(count_1$Sum_magnitude)/length(count_1$Sum_magnitude)
+absolute_mean_2 = sum(count_2$am_mag)/length(count_2$Sum_magnitude)
+absolute_mean_3 = sum(count_3$am_mag)/length(count_3$Sum_magnitude)
+absolute_mean_4 = sum(count_4$am_mag)/length(count_4$Sum_magnitude)
+absolute_mean_5 = sum(count_5$am_mag)/length(count_5$Sum_magnitude)
+absolute_mean_6 = sum(count_6$am_mag)/length(count_6$Sum_magnitude)
+absolute_mean_7 = sum(count_7$am_mag)/length(count_7$Sum_magnitude)
+absolute_mean_8 = sum(count_8$am_mag)/length(count_8$Sum_magnitude)
+absolute_mean_9 = sum(count_9$am_mag)/length(count_9$Sum_magnitude)
+absolute_mean_10 = sum(count_10$am_mag)/length(count_10$Sum_magnitude)
+absolute_mean_11 = sum(count_11$am_mag)/length(count_11$Sum_magnitude)
+absolute_mean_12 = sum(count_12$am_mag)/length(count_12$Sum_magnitude)
+absolute_mean_13 = sum(count_13$am_mag)/length(count_13$Sum_magnitude)
+absolute_mean_14 = sum(count_14$am_mag)/length(count_14$Sum_magnitude)
+absolute_mean_15 = sum(count_15$am_mag)/length(count_15$Sum_magnitude)
+absolute_mean_16 = sum(count_16$am_mag)/length(count_16$Sum_magnitude)
+absolute_mean_17 = sum(count_17$am_mag)/length(count_17$Sum_magnitude)
+absolute_mean_18 = sum(count_18$am_mag)/length(count_18$Sum_magnitude)
+
+
+plot(abs_mean)
+dur_mean_0 = sum(count_0$days_between)/length(count_0$days_between)
+dur_mean_1 = sum(count_1$days_between)/length(count_1$days_between)
+dur_mean_2 = sum(count_2$days_between)/length(count_2$days_between)
+dur_mean_3 = sum(count_3$days_between)/length(count_3$days_between)
+dur_mean_4 = sum(count_4$days_between)/length(count_4$days_between)
+dur_mean_5 = sum(count_5$days_between)/length(count_5$days_between)
+dur_mean_6 = sum(count_6$days_between)/length(count_6$days_between)
+dur_mean_7 = sum(count_7$days_between)/length(count_7$days_between)
+dur_mean_8 = sum(count_8$days_between)/length(count_8$days_between)
+dur_mean_9 = sum(count_9$days_between)/length(count_9$days_between)
+dur_mean_10 = sum(count_10$days_between)/length(count_10$days_between)
+dur_mean_11 = sum(count_11$days_between)/length(count_11$days_between)
+dur_mean_12 = sum(count_12$days_between)/length(count_12$days_between)
+dur_mean_13 = sum(count_13$days_between)/length(count_13$days_between)
+dur_mean_14 = sum(count_14$days_between)/length(count_14$days_between)
+dur_mean_15 = sum(count_15$days_between)/length(count_15$days_between)
+dur_mean_16 = sum(count_16$days_between)/length(count_16$days_between)
+dur_mean_17 = sum(count_17$days_between)/length(count_17$days_between)
+dur_mean_18 = sum(count_18$days_between)/length(count_18$days_between)
+
+
+
+
+
+dur_median_0 = median(count_0$days_between)
+dur_median_1 = median(count_1$days_between)
+dur_median_2 = median(count_2$days_between)
+dur_median_3 = median(count_3$days_between)
+dur_median_4 = median(count_4$days_between)
+dur_median_5 = median(count_5$days_between)
+dur_median_6 = median(count_6$days_between)
+dur_median_7 = median(count_7$days_between)
+dur_median_8 = median(count_8$days_between)
+dur_median_9 = median(count_9$days_between)
+dur_median_10 = median(count_10$days_between)
+dur_median_11 = median(count_11$days_between)
+dur_median_12 = median(count_12$days_between)
+dur_median_13 = median(count_13$days_between)
+dur_median_14 = median(count_14$days_between)
+dur_median_15 = median(count_15$days_between)
+dur_median_16 = median(count_16$days_between)
+dur_median_17 = median(count_17$days_between)
+dur_median_18 = median(count_18$days_between)
+
+
+
+
+median_dur = c( dur_median_1,dur_median_2,dur_median_3,
+             dur_median_4,dur_median_5,dur_median_6,dur_median_7,
+             dur_median_8,dur_median_9,dur_median_10,dur_median_11,
+             dur_median_12,dur_median_13,dur_median_14,dur_median_15,
+             dur_median_16,dur_median_17,dur_median_18)
+
+
+plot(log(abs_median), log(median_dur), col = "red")
+fit = lm(log(median_dur) ~ poly(log(abs_median), 10 ))
+summary(fit)
+g = data.frame(abs_median, median_dur)
+
+
+ggplot(g, aes(x = log(abs_median), y = log(median_dur))) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ poly(x, 5), color = "blue") +
+  labs(x = "Absolute median of Magnitude of Earthquake", y = "Median Duration of Volcanic Eruption") +
+  ggtitle("Polynomial Regression fit")
+
+
+plot(density(log(count_1$days_between)), xlab = "Volcano Duration Count", main = "Density Plot for Volcano duration for different Earthquake Count")
+lines(density(log(count_0$days_between)), col = "green" )
+lines(density(log(count_2$days_between)), col = "red")
+lines(density(log(count_3$days_between)), col = "blue")
+legend("topleft", legend = c("Count 0", "Count 1", "Count 2",
+                             "Count 3"#, "Count 4", "Count 5",
+                             #"Count 6", "Count 7" #"Count 8",
+                             #"Count 9", "Count 10", "Count 11",
+                             #"Count 12", "Count 14", "Count 15",
+                             #"Count 17"
+),
+col = c("green", "black", "red","blue"#,"brown","pink",
+       # "purple", "#CCFF00"#, "#00CCFF", "#73A3C8","#312271","#F8B539",
+        #"#DAFF47",  "yellow", "#00E5FF","#C7A76C"
+), lty = 1, cex = 0.8)
+
+
+
+
+plot(density(log(count_4$days_between)), col = "brown",  xlab = "Volcano Duration Count", main = "Density Plot for Volcano duration
+     for different Earthquake Count",  xlim = c(-3, 12), ylim = c(0, 0.4))
+lines(density(log(count_5$days_between)), col = "pink")
+lines(density(log(count_6$days_between)), col = "purple")
+lines(density(log(count_7$days_between)), col = "#CCFF00")
+legend("topleft", legend = c(#"Count 0", "Count 1", "Count 2",
+                             #"Count 3", 
+                            "Count 4", "Count 5",
+                             "Count 6", "Count 7" #"Count 8",
+                             #"Count 9", "Count 10", "Count 11",
+                             #"Count 12", "Count 14", "Count 15",
+                             #"Count 17"
+),
+col = c(#"green", "black", "red","blue",
+        "brown","pink",
+        "purple", "#CCFF00"#, "#00CCFF", "#73A3C8","#312271","#F8B539",
+        #"#DAFF47",  "yellow", "#00E5FF","#C7A76C"
+), lty = 1, cex = 0.8)
+
+
+
+
+
+
+
+plot(density(log(count_8$days_between)), col = "#00CCFF",  xlab = "Volcano Duration Count", main = "Density Plot for Volcano duration
+     for different Earthquake Count",  xlim = c(-3, 12), ylim = c(0, 0.3))
+lines(density(log(count_9$days_between)), col = "#73A3C8")
+lines(density(log(count_10$days_between)), col = "#312271")
+lines(density(log(count_11$days_between)), col = "#F8B539")
+legend("topleft", legend = c(#"Count 0", "Count 1", "Count 2",
+  #"Count 3", "Count 4", "Count 5",
+  #"Count 6", "Count 7", 
+  "Count 8",
+  "Count 9", "Count 10", "Count 11"
+  #"Count 12", "Count 14", "Count 15",
+  #"Count 17"
+),
+col = c(#"green", "black", "red","blue","brown","pink",
+  #"purple", "#CCFF00"#
+  "#00CCFF", "#73A3C8","#312271","#F8B539"
+  #"#DAFF47",  "yellow", "#00E5FF","#C7A76C"
+), lty = 1, cex = 0.8)
+
+
+
+
+
+plot(density(log(count_12$days_between)), col = "#DAFF47" , xlab = "Volcano Duration Count", main = "Density Plot for Volcano duration
+     for different Earthquake Count",  xlim = c(-3, 12), ylim = c(0, 1.3))
+#lines(density(log(count_13$days_between)), col = "#4BBE9F")
+lines(density(log(count_14$days_between)), col = "yellow")
+lines(density(log(count_15$days_between)), col = "#00E5FF")
+#lines(density(log(count_16$days_between)), col = "#4C00FF")
+lines(density(log(count_17$days_between)), col = "#C7A76C")
+#lines(density(log(count_18$days_between)), col = "#7F000D")
+legend("topleft", legend = c(#"Count 0", "Count 1", "Count 2",
+                              #"Count 3", "Count 4", "Count 5",
+                              #"Count 6", "Count 7", 
+                            #"Count 8",
+                              #"Count 9", "Count 10", "Count 11",
+                              "Count 12", "Count 14", "Count 15",
+                               "Count 17"
+                             ),
+       col = c(#"green", "black", "red","blue","brown","pink",
+               #"purple", "#CCFF00"#
+               # "#00CCFF", "#73A3C8","#312271","#F8B539",
+               "#DAFF47",  "yellow", "#00E5FF","#C7A76C"
+               ), lty = 1, cex = 0.8)
