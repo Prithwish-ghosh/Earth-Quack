@@ -1328,3 +1328,231 @@ legend("topleft", legend = c(#"Count 0", "Count 1", "Count 2",
                # "#00CCFF", "#73A3C8","#312271","#F8B539",
                "#DAFF47",  "yellow", "#00E5FF","#C7A76C"
                ), lty = 1, cex = 0.8)
+
+
+three_y = read.csv("C:/Users/prithwihsh/OneDrive/Documents/3_years.csv")
+head(three_y)
+summary(three_y)
+thre_y = three_y
+head(thre_y)
+dim(three_y)
+
+
+thre_y$Sum_magnitude = Sum_mag
+thre_y$Sum_magnitude
+summary(thre_y$num_earthquakes_before_erupt)
+
+
+filtered_data = c()
+for (i in 0:18) {
+  filtered_data[[i]] <- thre_y[thre_y$num_earthquakes_before_erupt == i, ]
+}
+
+
+count_datasets = list()
+for (count_value in 0:18) {
+  # Extract data for the current count value
+  subset_data <- subset(thre_y, thre_y$num_earthquakes_before_erupt == count_value)
+  
+  # Store the subset in the list using a unique name
+  count_datasets[[paste("count", count_value, sep = "_")]] <- subset_data
+}
+
+gg = data.frame(log(median_dur), log(abs_median))
+dim(gg)
+gg = na.omit(gg)
+gg = gg[is.finite(gg$log.median_dur.),]
+gg1 = data.frame(log(mean_dur), log(abs_mean))
+gg1
+dim(gg1)
+dim(gg1)
+
+fit = lm(gg1$log.mean_dur. ~ poly(gg1$log.abs_mean.,1, raw = TRUE) )
+summary(fit)
+fit1 = lm(gg$log.median_dur. ~ poly(gg$log.abs_median.,7) )
+summary(fit1)
+
+
+
+ muu = predict(fit)
+muu
+
+filtered_data1 <- count_1$days_between[count_1$days_between != 0]
+filtered_data2 <- count_2$days_between[count_2$days_between != 0]
+filtered_data3 <- count_3$days_between[count_3$days_between != 0]
+filtered_data4 <- count_4$days_between[count_4$days_between != 0]
+filtered_data5 <- count_5$days_between[count_5$days_between != 0]
+filtered_data6 <- count_6$days_between[count_6$days_between != 0]
+filtered_data7 <- count_7$days_between[count_7$days_between != 0]
+filtered_data8 <- count_8$days_between[count_8$days_between != 0]
+filtered_data9 <- count_9$days_between[count_9$days_between != 0]
+filtered_data10 <- count_10$days_between[count_10$days_between != 0]
+filtered_data11 <- count_11$days_between[count_11$days_between != 0]
+filtered_data12 <- count_12$days_between[count_12$days_between != 0]
+filtered_data13 <- count_13$days_between[count_13$days_between != 0]
+filtered_data14 <- count_14$days_between[count_14$days_between != 0]
+filtered_data15 <- count_15$days_between[count_15$days_between != 0]
+filtered_data16 <- count_16$days_between[count_16$days_between != 0]
+filtered_data17 <- count_17$days_between[count_17$days_between != 0]
+filtered_data18 <- count_18$days_between[count_18$days_between != 0]
+
+muu = read.csv("C:/Users/prithwihsh/OneDrive/Documents/mean_count.csv")
+muu= predict(fit)
+
+x_1 = log(filtered_data1)
+
+x_2 = log(filtered_data2)
+x_2 <- c(x_2, rep(muu[2], length.out = 202 - length(x_2)))
+
+x_3 = log(filtered_data3)
+x_3 <- c(x_3, rep(muu[3], length.out = 202 - length(x_3)))
+
+x_4 = log(filtered_data4)
+x_4 <- c(x_4, rep(muu[4], length.out = 202 - length(x_4)))
+
+x_5 = log(filtered_data5)
+x_5 <- c(x_5, rep(muu[5], length.out = 202 - length(x_5)))
+
+x_6 = log(filtered_data6)
+x_6 <- c(x_6, rep(muu[6], length.out = 202 - length(x_6)))
+
+x_7 = log(filtered_data7)
+x_7 <- c(x_7, rep(muu[7], length.out = 202 - length(x_7)))
+
+x_8 = log(filtered_data8)
+x_8 <- c(x_8, rep(muu[8], length.out = 202 - length(x_8)))
+
+x_9 = log(filtered_data9)
+x_9 <- c(x_9, rep(muu[9], length.out = 202 - length(x_9)))
+
+x_10 = log(filtered_data10)
+x_10 <- c(x_10, rep(muu[10], length.out = 202 - length(x_10)))
+
+x_11 = log(filtered_data11)
+x_11 <- c(x_11, rep(muu[11], length.out = 202 - length(x_11)))
+
+x_12 = log(filtered_data12)
+x_12 <- c(x_12, rep(muu[12], length.out = 202 - length(x_12)))
+
+x_13 = log(filtered_data13)
+x_13 <- c(x_13, rep(muu[13], length.out = 202 - length(x_13)))
+
+x_14 = log(filtered_data14)
+x_14 <- c(x_14, rep(muu[14], length.out = 202 - length(x_14)))
+
+x_15 = log(filtered_data15)
+x_15 <- c(x_15, rep(muu[15], length.out = 202 - length(x_15)))
+
+x_16 = log(filtered_data16)
+x_16 <- c(x_16, rep(muu[16], length.out = 202 - length(x_16)))
+
+x_17 = log(filtered_data17)
+x_17 <- c(x_17, rep(muu[17], length.out = 202 - length(x_17)))
+
+x_18 = log(filtered_data18)
+x_18 <- c(x_18, rep(muu[18], length.out = 202 - length(x_18)))
+
+
+sgtemp = function(x_i, mu, N_i){
+  return((N_i)*(sum((x_i - mu)^2)))
+}
+
+muu
+
+X=rbind(x_1, x_2, x_3, x_4, x_5,x_6,x_7,x_8,x_9,x_10,x_11, x_12,x_13, x_14, x_15, x_16,x_17,x_18)
+muu= predict(fit)
+N=c(1:18)
+
+sigmahat=function(X=X, muu=muu, N=N, 
+                  sg=0 )
+{
+  for(i in 1:18)
+  {   sg=sg+sgtemp(X[i, ] , muu[i], N[i])  }
+  return(sg/(sum(N)))
+}
+
+sigmahatt = sigmahat(X=X, muu=muu, N=N, 
+         sg=0 )
+individual_sigma=c()
+
+for (i in 1:18) {
+  individual_sigma[i]=(sigmahatt/N[i]**1.35)
+}
+
+
+
+sample6666 = rnorm(10000 , muu[6], sqrt(individual_sigma[6]))
+sample4444 = rnorm(10000 , muu[4], sqrt(individual_sigma[4]))
+sample3333 = rnorm(10000 , muu[3], sqrt(individual_sigma[3]))
+sample11001 = rnorm(10000 , muu[10], sqrt(individual_sigma[10]))
+
+plot(density(log(filtered_data4)), col = "red", 
+     xlab = "Volcano Duration Count", main = "Density Plot for Volcano duration for different Earthquake Count",
+     xlim = c(-2, 15), ylim = c(0, 0.3))
+lines(density(sample4444), col = "red4", lty = 2)
+lines(density(log(filtered_data2)), col = "green")
+lines(density(sample2222), col = "green4", lty = 2)
+lines(density(log(filtered_data6)), col = "purple")
+lines(density(sample6666), col = "purple4",lty = 2)
+lines(density(log(filtered_data14)), col = "pink2")
+lines(density(sample11441), col = "pink4", lty = 2)
+legend("topright", legend = c("Count 2", "Count 4", "Count 6","count 14",
+                             "normal drawn for count 2", "normal drawn for count 4",
+                             "normal drawn for count 6", "normal drawn for count 14" ),
+col = c("green", "green4", "red","red4","purple","purple4","pink2","pink4"), lty = 1, cex = 0.8)
+
+
+
+par(pty="s",mfrow=c(2,2),mar=c(2,0,2,0))
+
+p1=hist(log(filtered_data3), probability = T , freq = F, main = "Count 3",
+        border = "blue2", col = "lightblue")
+lines(density(sample3333), col = "red", lty = 1, lwd = 3)
+p2=hist(log(filtered_data4),probability = T, freq=F, main = "Count 4", border = "blue2", col = "lightblue")
+lines(density(sample4444), col = "red", lty = 1, lwd = 3)
+p3=hist(log(filtered_data6), freq=F, probability = T, main = "count 6", border = "blue2", col = "lightblue")
+lines(density(sample6666), col = "red", lty = 1, lwd = 3)
+p4=hist(log(filtered_data10), freq=F, probability = T, main = "count 10",
+        border = "blue2", col = "lightblue",ylim = c(0, 0.3))
+lines(density(sample11001), col = "red", lty = 1, lwd = 3)
+
+library(ggplot2)
+ggplot(gg1, aes(x = gg1$log.abs_mean., y = gg1$log.mean_dur.)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ poly(x, 7), color = "blue") +
+  geom_smooth(method = "lm", formula = y ~ sin(24.05838*(x + 0.0116139)), color = "red") +
+  #geom_function(method = "lm", formula = y ~ 1.90078*sin(24.05838*(gg1$log.abs_mean. + 0.0116139)) + 4.20681,                col = "red") +
+  labs(x = "Absolute mean of Magnitude of Earthquake", y = "Median Duration of \n Volcanic Eruption") +
+  ggtitle("Polynomial & Sinusoidal Regression fit")+
+  theme_bw() +
+  theme_update(plot.title = element_text(hjust = 0.5))
+gg1
+
+  
+#theme_set(theme_gray())
+theme(legend.position = "bottom",
+      legend.title = element_blank(),
+      legend.key.size = unit(0.5, 'cm'),
+      legend.text = element_text(size=7),
+      panel.grid.major.x = element_blank(),
+      panel.border = element_blank(),
+      plot.title = element_text(hjust = 0),
+      plot.subtitle = element_text(size=6, hjust=0, face="italic", color="black"),
+      axis.text.x = element_text(size = 6, face = "bold", color="black")) +
+  theme(text = element_text(family = "Comic Sans MS"))
+
+
+ggplot(gg, aes(x = gg$log.abs_median., y = gg$log.median_dur.)) +
+  geom_point(size = 5) +
+  geom_smooth(method = "lm", formula = y ~ poly(x, 7), color = "blue") +
+  geom_smooth(method = "lm", formula = y ~ sin(450*(x + 2.83405)), color = "red") +
+  #geom_function(method = "lm", formula = y ~ 1.90078*sin(24.05838*(gg1$log.abs_mean. + 0.0116139)) + 4.20681,                col = "red") +
+  labs(x = "Log of Absolute median of Magnitude of Earthquake", y = "Median Duration of \n Volcanic Eruption") +
+  ggtitle("Polynomial & Sinusoidal Regression fit")+
+  theme_bw() +
+  theme_update(plot.title = element_text(hjust = 0.5))+theme(
+    axis.title.x = element_text(size = 30), # Adjust the size as needed
+    axis.title.y = element_text(size = 30)  # Adjust the size as needed
+  ) + 
+  theme(plot.title = element_text(size = 30))
+                         
